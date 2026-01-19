@@ -1,96 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* Rio Safaris Uganda Design System
+   Inspired by African wilderness: forest greens, golden savannas, rich earth tones
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Core Safari Palette */
+    --background: 45 30% 97%;
+    --foreground: 30 25% 12%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 45 25% 95%;
+    --card-foreground: 30 25% 12%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 45 30% 97%;
+    --popover-foreground: 30 25% 12%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary: Deep Forest Green */
+    --primary: 145 45% 22%;
+    --primary-foreground: 45 30% 97%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary: Warm Golden Amber */
+    --secondary: 38 75% 55%;
+    --secondary-foreground: 30 25% 12%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted: Soft Savanna */
+    --muted: 40 20% 88%;
+    --muted-foreground: 30 15% 40%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent: Burnt Orange Sunset */
+    --accent: 25 85% 50%;
+    --accent-foreground: 45 30% 97%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 45 30% 97%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 40 20% 82%;
+    --input: 40 20% 85%;
+    --ring: 145 45% 22%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
+    /* Safari-specific tokens */
+    --safari-earth: 25 35% 30%;
+    --safari-gold: 42 90% 50%;
+    --safari-cream: 45 40% 94%;
+    --safari-moss: 120 25% 35%;
+    --safari-sunset: 15 80% 55%;
+    --safari-night: 220 30% 15%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    /* Gradients */
+    --gradient-sunset: linear-gradient(135deg, hsl(25, 85%, 50%) 0%, hsl(42, 90%, 50%) 100%);
+    --gradient-forest: linear-gradient(135deg, hsl(145, 45%, 22%) 0%, hsl(120, 25%, 35%) 100%);
+    --gradient-savanna: linear-gradient(180deg, hsl(38, 75%, 55%) 0%, hsl(25, 85%, 50%) 100%);
+    --gradient-hero-overlay: linear-gradient(180deg, hsla(30, 25%, 12%, 0.3) 0%, hsla(30, 25%, 12%, 0.7) 100%);
 
-    --sidebar-primary: 240 5.9% 10%;
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -4px hsla(30, 25%, 12%, 0.1);
+    --shadow-medium: 0 8px 30px -6px hsla(30, 25%, 12%, 0.15);
+    --shadow-dramatic: 0 20px 50px -10px hsla(30, 25%, 12%, 0.25);
 
-    --sidebar-primary-foreground: 0 0% 98%;
+    /* Typography */
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'Source Sans 3', sans-serif;
 
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 45 30% 97%;
+    --sidebar-foreground: 30 25% 12%;
+    --sidebar-primary: 145 45% 22%;
+    --sidebar-primary-foreground: 45 30% 97%;
+    --sidebar-accent: 40 20% 88%;
+    --sidebar-accent-foreground: 30 25% 12%;
+    --sidebar-border: 40 20% 82%;
+    --sidebar-ring: 145 45% 22%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 220 30% 10%;
+    --foreground: 45 30% 94%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 220 28% 14%;
+    --card-foreground: 45 30% 94%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 220 30% 10%;
+    --popover-foreground: 45 30% 94%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 145 40% 45%;
+    --primary-foreground: 220 30% 10%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 38 70% 50%;
+    --secondary-foreground: 220 30% 10%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 220 25% 18%;
+    --muted-foreground: 40 15% 60%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 25 80% 55%;
+    --accent-foreground: 220 30% 10%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 45 30% 94%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 220 25% 20%;
+    --input: 220 25% 22%;
+    --ring: 145 40% 45%;
+
+    --safari-earth: 25 30% 50%;
+    --safari-gold: 42 85% 55%;
+    --safari-cream: 45 20% 20%;
+    --safari-moss: 120 20% 40%;
+    --safari-sunset: 15 75% 60%;
+    --safari-night: 220 35% 8%;
+
+    --gradient-hero-overlay: linear-gradient(180deg, hsla(220, 30%, 10%, 0.4) 0%, hsla(220, 30%, 10%, 0.8) 100%);
+
+    --sidebar-background: 220 30% 10%;
+    --sidebar-foreground: 45 30% 94%;
+    --sidebar-primary: 145 40% 45%;
+    --sidebar-primary-foreground: 220 30% 10%;
+    --sidebar-accent: 220 25% 18%;
+    --sidebar-accent-foreground: 45 30% 94%;
+    --sidebar-border: 220 25% 20%;
+    --sidebar-ring: 145 40% 45%;
   }
 }
 
@@ -99,7 +132,143 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold tracking-tight;
+  }
+}
+
+@layer components {
+  .safari-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .safari-section {
+    @apply py-16 md:py-24;
+  }
+
+  .safari-heading {
+    @apply text-4xl md:text-5xl lg:text-6xl font-display font-bold text-foreground;
+  }
+
+  .safari-subheading {
+    @apply text-2xl md:text-3xl font-display font-semibold text-foreground;
+  }
+
+  .safari-text {
+    @apply text-lg text-muted-foreground leading-relaxed;
+  }
+
+  .safari-card {
+    @apply bg-card rounded-2xl overflow-hidden shadow-soft transition-all duration-300 hover:shadow-dramatic hover:-translate-y-1;
+  }
+
+  .safari-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary;
+  }
+
+  .safari-gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-sunset);
+  }
+
+  .safari-overlay {
+    background: var(--gradient-hero-overlay);
+  }
+
+  .safari-btn-primary {
+    @apply inline-flex items-center justify-center px-8 py-4 bg-primary text-primary-foreground font-semibold rounded-full transition-all duration-300 hover:bg-primary/90 hover:scale-105 hover:shadow-dramatic;
+  }
+
+  .safari-btn-secondary {
+    @apply inline-flex items-center justify-center px-8 py-4 bg-secondary text-secondary-foreground font-semibold rounded-full transition-all duration-300 hover:bg-secondary/90 hover:scale-105 hover:shadow-medium;
+  }
+
+  .safari-btn-outline {
+    @apply inline-flex items-center justify-center px-8 py-4 border-2 border-primary-foreground text-primary-foreground font-semibold rounded-full transition-all duration-300 hover:bg-primary-foreground hover:text-primary;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .animate-fade-in-down {
+    animation: fadeInDown 0.6s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.5s ease-out forwards;
+  }
+
+  .animate-slide-in-left {
+    animation: slideInLeft 0.6s ease-out forwards;
+  }
+
+  .animate-slide-in-right {
+    animation: slideInRight 0.6s ease-out forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 }
