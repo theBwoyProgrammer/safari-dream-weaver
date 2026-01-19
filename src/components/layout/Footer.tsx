@@ -103,9 +103,13 @@ const Footer = () => {
       {/* Copyright */}
       <div className="border-t border-primary-foreground/20">
         <div className="safari-container py-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-primary-foreground/60 text-sm">
-            © {new Date().getFullYear()} Rio Safaris Uganda. All rights reserved.
-          </p>
+          <div className="flex flex-col md:flex-row items-center gap-2 text-primary-foreground/60 text-sm">
+            <p>© {new Date().getFullYear()} Rio Safaris Uganda. All rights reserved.</p>
+            <span className="hidden md:inline">|</span>
+            <p>
+              Powered by <a href="https://ovrtilabstechsystems.com" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors underline">OvrtiLabs Tech Systems</a>
+            </p>
+          </div>
           <div className="flex gap-6 text-sm text-primary-foreground/60">
             <a href="#" className="hover:text-primary-foreground transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-primary-foreground transition-colors">Terms of Service</a>
