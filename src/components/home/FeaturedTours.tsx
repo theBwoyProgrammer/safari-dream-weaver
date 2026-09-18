@@ -1,152 +1,32 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Clock, Users, MapPin, ArrowRight } from "lucide-react";
-import gorillaImage from "@/assets/gorilla-trekking.jpg";
-import lionImage from "@/assets/lion-safari.jpg";
-import fallsImage from "@/assets/murchison-falls.jpg";
-import kidepoImage from "@/assets/kidepo-wildlife.jpg";
+import { BedDouble, Coffee, Utensils, ArrowRight, Check } from "lucide-react";
+import lodgeFlyer from "@/assets/tembo-safari-lodge-rates.jpeg.asset.json";
 
-const tours = [
-  {
-    id: 1,
-    title: "Gorilla Trekking Adventure",
-    location: "Bwindi Impenetrable Forest",
-    duration: "3 Days",
-    groupSize: "8 People",
-    price: "$1,500",
-    image: gorillaImage,
-    featured: true,
-  },
-  {
-    id: 2,
-    title: "Queen Elizabeth Safari",
-    location: "Queen Elizabeth National Park",
-    duration: "4 Days",
-    groupSize: "12 People",
-    price: "$1,200",
-    image: lionImage,
-    featured: false,
-  },
-  {
-    id: 3,
-    title: "Murchison Falls Explorer",
-    location: "Murchison Falls National Park",
-    duration: "3 Days",
-    groupSize: "10 People",
-    price: "$950",
-    image: fallsImage,
-    featured: false,
-  },
-  {
-    id: 4,
-    title: "Kidepo Valley Expedition",
-    location: "Kidepo Valley National Park",
-    duration: "5 Days",
-    groupSize: "8 People",
-    price: "$1,800",
-    image: kidepoImage,
-    featured: false,
-  },
+const packages = [
+  { title: "Standard Single", icon: BedDouble, rates: [{ plan: "Full Board", price: "$90" }, { plan: "Half Board", price: "$80" }, { plan: "Bed & Breakfast", price: "$70" }] },
+  { title: "Double / Twin", icon: BedDouble, rates: [{ plan: "Full Board", price: "$120" }, { plan: "Half Board", price: "$100" }, { plan: "Bed & Breakfast", price: "$90" }] },
 ];
 
-const FeaturedTours = () => {
-  return (
-    <section id="featured-tours" className="safari-section bg-background">
-      <div className="safari-container">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-16"
-        >
-          <span className="safari-badge mb-4">Our Adventures</span>
-          <h2 className="safari-heading mb-6">
-            Unforgettable Safari Experiences
-          </h2>
-          <p className="safari-text">
-            From gorilla trekking in misty forests to game drives across endless savannas, 
-            discover Uganda's incredible wildlife and natural wonders.
-          </p>
-        </motion.div>
-
-        {/* Tours Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {tours.map((tour, index) => (
-            <motion.article
-              key={tour.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`safari-card group ${
-                tour.featured ? "md:col-span-2 md:row-span-2" : ""
-              }`}
-            >
-              <Link to={`/tours/${tour.id}`} className="block">
-                <div className={`relative overflow-hidden ${
-                  tour.featured ? "aspect-[4/3]" : "aspect-[3/4]"
-                }`}>
-                  <img
-                    src={tour.image}
-                    alt={tour.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent" />
-                  
-                  {/* Price Badge */}
-                  <div className="absolute top-4 right-4 bg-secondary text-secondary-foreground px-4 py-2 rounded-full font-bold text-sm">
-                    From {tour.price}
-                  </div>
-
-                  {/* Content */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-primary-foreground">
-                    <div className="flex items-center gap-2 text-sm mb-2 opacity-90">
-                      <MapPin size={14} />
-                      <span>{tour.location}</span>
-                    </div>
-                    <h3 className={`font-display font-bold mb-3 ${
-                      tour.featured ? "text-2xl md:text-3xl" : "text-xl"
-                    }`}>
-                      {tour.title}
-                    </h3>
-                    <div className="flex items-center gap-4 text-sm opacity-90">
-                      <span className="flex items-center gap-1">
-                        <Clock size={14} />
-                        {tour.duration}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Users size={14} />
-                        {tour.groupSize}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
+const FeaturedTours = () => (
+  <section id="featured-tours" className="safari-section bg-background">
+    <div className="safari-container">
+      <div className="mb-14 max-w-3xl"><span className="safari-badge mb-4">Rooms & rates</span><h2 className="safari-heading mb-5">Comfortable stays, simple choices</h2><p className="safari-text">Traditional grass-thatched cottages and standard rooms with private balconies, mosquito nets, self-contained bathrooms, and hot showers.</p></div>
+      <div className="grid gap-8 lg:grid-cols-[1.2fr_.8fr]">
+        <div className="grid gap-6 md:grid-cols-2">
+          {packages.map((item, index) => (
+            <motion.article key={item.title} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * .12 }} className="safari-card p-7">
+              <item.icon className="mb-5 text-primary" size={34} /><h3 className="mb-5 font-display text-2xl font-bold">{item.title}</h3>
+              <div className="mb-7 space-y-3">{item.rates.map(rate => <div key={rate.plan} className="flex items-center justify-between border-b border-border pb-3"><span className="flex items-center gap-2 text-muted-foreground"><Check size={16} className="text-primary" />{rate.plan}</span><strong className="text-xl text-primary">{rate.price}</strong></div>)}</div>
+              <Link to="/contact" className="safari-btn-primary w-full">Book {item.title}</Link>
             </motion.article>
           ))}
+          <div className="md:col-span-2 grid gap-4 border-t border-border pt-6 sm:grid-cols-2"><p className="flex items-center gap-3"><Utensils className="text-secondary" /> Local and continental dining onsite</p><p className="flex items-center gap-3"><Coffee className="text-secondary" /> Restaurant and bar open to guests</p></div>
         </div>
-
-        {/* View All Button */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-center mt-12"
-        >
-          <Link
-            to="/tours"
-            className="safari-btn-primary inline-flex items-center gap-2"
-          >
-            View All Tours
-            <ArrowRight size={20} />
-          </Link>
-        </motion.div>
+        <div className="overflow-hidden rounded-lg bg-primary"><img src={lodgeFlyer.url} alt="Tembo Safari Lodge room rates flyer" className="h-full w-full object-cover object-top" /></div>
       </div>
-    </section>
-  );
-};
-
+      <div className="mt-10 text-center"><Link to="/tours" className="inline-flex items-center gap-2 font-semibold text-primary">See accommodation details <ArrowRight size={18} /></Link></div>
+    </div>
+  </section>
+);
 export default FeaturedTours;
