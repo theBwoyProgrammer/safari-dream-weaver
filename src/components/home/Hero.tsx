@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ChevronDown, MapPin } from "lucide-react";
-import heroImage from "@/assets/hero-safari.jpg";
+import heroImage from "@/assets/tembo-lodge-hero.jpg";
 
 const Hero = () => (
   <section className="relative flex min-h-[92vh] items-center overflow-hidden">
-    <div className="absolute inset-0"><img src={heroImage} alt="Wildlife landscape in Queen Elizabeth National Park" className="h-full w-full object-cover" /><div className="absolute inset-0 safari-overlay" /></div>
+    <div className="absolute inset-0"><img src={heroImage} alt="Thatched safari cottages overlooking the landscape near the Kazinga Channel" width={1920} height={1280} className="h-full w-full object-cover" /><div className="absolute inset-0 safari-overlay" /></div>
     <div className="safari-container relative z-10 w-full py-32 text-primary-foreground">
       <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .8 }} className="max-w-4xl">
         <span className="mb-8 inline-flex items-center gap-2 rounded-full bg-secondary px-5 py-2 text-sm font-semibold text-secondary-foreground"><MapPin size={16} /> Katunguru · Queen Elizabeth National Park</span>
