@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { CheckCircle, ArrowRight } from "lucide-react";
-import safariTourImage from "@/assets/safari-tour.jpg";
+import safariTourImage from "@/assets/image-3.jpeg";
 
 const highlights = ["Just 300 metres from the Kazinga Channel", "Private balconies and self-contained bathrooms", "Frequent views of hippos, birds, and wildlife", "Onsite restaurant and bar"];
 const AboutPreview = () => (

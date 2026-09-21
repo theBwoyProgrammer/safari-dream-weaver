@@ -11,9 +11,23 @@ import lionImage from "@/assets/lion-safari.jpg";
 import fallsImage from "@/assets/murchison-falls.jpg";
 import kidepoImage from "@/assets/kidepo-wildlife.jpg";
 import safariTourImage from "@/assets/safari-tour.jpg";
+import image1 from "@/assets/image-1.jpeg";
+import image2 from "@/assets/image-2.jpeg";
+import image3 from "@/assets/image-3.jpeg";
+import image4 from "@/assets/image-4.jpeg";
+import image5 from "@/assets/image-5.jpeg";
+import image6 from "@/assets/image-6.jpeg";
+import image7 from "@/assets/image-7.jpeg";
 
 const galleryImages = [
-  { src: lodgeFlyer, title: "Tembo Safari Lodge", category: "The Lodge" },
+  { src: image4, title: "Sunrise over the lodge", category: "The Lodge" },
+  { src: image3, title: "Tembo from above", category: "The Lodge" },
+  { src: image5, title: "A warm lodge welcome", category: "The Lodge" },
+  { src: image1, title: "Dining at Tembo", category: "The Lodge" },
+  { src: image7, title: "Dinner with a view", category: "The Lodge" },
+  { src: image2, title: "Golden hour at the lake", category: "Landscapes" },
+  { src: image6, title: "A balcony view", category: "Landscapes" },
+  { src: lodgeFlyer, title: "Tembo Safari Lodge rates", category: "The Lodge" },
   { src: heroImage, title: "Wildlife at sunset", category: "Wildlife" },
   { src: lionImage, title: "Queen Elizabeth wildlife", category: "Wildlife" },
   { src: safariTourImage, title: "Game drive country", category: "Activities" },

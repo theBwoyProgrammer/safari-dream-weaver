@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/logo.jpeg";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -29,9 +30,12 @@ const Navbar = () => {
   return (
     <nav className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${isScrolled ? "bg-background/95 py-3 shadow-soft backdrop-blur-md" : "bg-transparent py-5"}`}>
       <div className="safari-container flex items-center justify-between">
-        <Link to="/" className="leading-none">
-          <span className={`block font-display text-xl font-bold md:text-2xl ${isScrolled ? "text-primary" : "text-primary-foreground"}`}>TEMBO SAFARI LODGE</span>
-          <span className="mt-1 block text-xs font-semibold uppercase text-secondary">Queen Elizabeth, Uganda</span>
+        <Link to="/" className="flex items-center gap-3 leading-none">
+          <img src={logo} alt="Tembo Safari Lodge logo" className="h-12 w-12 rounded-full object-cover ring-2 ring-secondary/70" />
+          <span>
+            <span className={`block font-display text-xl font-bold md:text-2xl ${isScrolled ? "text-primary" : "text-primary-foreground"}`}>TEMBO SAFARI LODGE</span>
+            <span className="mt-1 block text-xs font-semibold uppercase text-secondary">Queen Elizabeth, Uganda</span>
+          </span>
         </Link>
         <div className="hidden items-center gap-6 lg:flex">
           {navLinks.map((link) => (
