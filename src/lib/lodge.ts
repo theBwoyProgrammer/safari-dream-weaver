@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+import { readPublicRecords } from "@/integrations/firebase/data";
 
 export type MealPlan = "full_board" | "half_board" | "bed_breakfast";
 
@@ -46,23 +46,9 @@ export const toDateKey = (date: Date) => {
 export const nightsBetween = (from: Date, to: Date) =>
   Math.max(0, Math.round((to.getTime() - from.getTime()) / 86400000));
 
-export const fetchRoomTypes = async () => {
-  const { data, error } = await supabase
-    .from("room_types")
-    .select("*")
-    .order("sort_order", { ascending: true });
-  if (error) throw error;
-  return (data ?? []) as unknown as RoomType[];
-};
+export const fetchRoomTypes = () => readPublicRecords<RoomType>("rooms");
 
-export const fetchAvailability = async (start: Date, end: Date) => {
-  const { data, error } = await supabase.rpc("get_availability", {
-    _start: toDateKey(start),
-    _end: toDateKey(end),
-  });
-  if (error) throw error;
-  return (data ?? []) as unknown as AvailabilityRow[];
-};
+export const fetchAvailability = async (_start: Date, _end: Date) => [] as AvailabilityRow[];
 
 /** Map of `${roomTypeId}|${dateKey}` -> rooms still open that night. */
 export const buildAvailabilityMap = (rows: AvailabilityRow[]) => {

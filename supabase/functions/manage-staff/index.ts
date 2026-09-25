@@ -30,29 +30,12 @@ Deno.serve(async (req) => {
 
     const { action, email, role } = (await req.json()) ?? {};
 
-    const { count: adminCount } = await admin
-      .from("user_roles")
-      .select("id", { count: "exact", head: true })
-      .eq("role", "admin");
-
-    // Bootstrap: the very first signed-in person can claim the admin account.
-    if (action === "claim_admin") {
-      if ((adminCount ?? 0) > 0) {
-        return json({ error: "An admin already exists for this lodge." }, 403);
-      }
-      const { error } = await admin
-        .from("user_roles")
-        .insert({ user_id: caller.id, role: "admin" });
-      if (error) throw error;
-      return json({ ok: true, claimed: true });
-    }
-
     const { data: callerRoles } = await admin
       .from("user_roles")
       .select("role")
       .eq("user_id", caller.id);
-    const isAdmin = (callerRoles ?? []).some((row) => row.role === "admin");
-    if (!isAdmin) return json({ error: "Only admins can manage team access." }, 403);
+    const isSuperAdmin = (callerRoles ?? []).some((row) => row.role === "super_admin");
+    if (!isSuperAdmin) return json({ error: "Only the super admin can manage team access." }, 403);
 
     if (action === "list") {
       const { data: roleRows } = await admin.from("user_roles").select("user_id, role");
@@ -69,7 +52,7 @@ Deno.serve(async (req) => {
       return json({ team });
     }
 
-    if (!email || !role || !["admin", "staff"].includes(role)) {
+    if (!email || !role || !["admin", "super_admin"].includes(role)) {
       return json({ error: "Provide an email address and a role." }, 400);
     }
 
@@ -94,8 +77,8 @@ Deno.serve(async (req) => {
     }
 
     if (action === "revoke") {
-      if (profile.id === caller.id && role === "admin") {
-        return json({ error: "You cannot remove your own admin access." }, 400);
+      if (profile.id === caller.id && role === "super_admin") {
+        return json({ error: "You cannot remove your own super admin access." }, 400);
       }
       const { error } = await admin
         .from("user_roles")

@@ -1,0 +1,52 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function profile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isAdmin() {
+      return signedIn() && (profile().role == 'admin' || profile().role == 'super_admin');
+    }
+
+    function isSuperAdmin() {
+      return signedIn() && profile().role == 'super_admin';
+    }
+
+    match /users/{userId} {
+      allow read: if signedIn() && (request.auth.uid == userId || isSuperAdmin());
+      allow create: if (signedIn() && request.auth.uid == userId && request.resource.data.role == 'pending') || isSuperAdmin();
+      allow update, delete: if isSuperAdmin();
+    }
+
+    match /rooms/{roomId} {
+      allow read: if resource.data.is_active == true || isAdmin();
+      allow write: if isSuperAdmin();
+    }
+
+    match /gallery/{imageId} {
+      allow read: if resource.data.is_active == true || isAdmin();
+      allow write: if isSuperAdmin();
+    }
+
+    match /activities/{activityId} {
+      allow read: if resource.data.is_active == true || isAdmin();
+      allow write: if isSuperAdmin();
+    }
+
+    match /siteImages/{imageId} {
+      allow read: if true;
+      allow write: if isSuperAdmin();
+    }
+
+    match /bookings/{bookingId} {
+      allow create: if true;
+      allow read: if isAdmin();
+      allow update, delete: if isSuperAdmin();
+    }
+  }
+}

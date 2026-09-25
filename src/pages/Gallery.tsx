@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
@@ -18,8 +18,9 @@ import image4 from "@/assets/image-4.jpeg";
 import image5 from "@/assets/image-5.jpeg";
 import image6 from "@/assets/image-6.jpeg";
 import image7 from "@/assets/image-7.jpeg";
+import { fetchPublicGallery, type PublicGalleryImage } from "@/lib/content";
 
-const galleryImages = [
+const fallbackGalleryImages: PublicGalleryImage[] = [
   { src: image4, title: "Sunrise over the lodge", category: "The Lodge" },
   { src: image3, title: "Tembo from above", category: "The Lodge" },
   { src: image5, title: "A warm lodge welcome", category: "The Lodge" },
@@ -39,7 +40,11 @@ const categories = ["All", "The Lodge", "Wildlife", "Activities", "Landscapes"];
 
 const Gallery = () => {
   const [selectedCategory,setSelectedCategory]=useState("All");
+  const [galleryImages, setGalleryImages] = useState<PublicGalleryImage[]>(fallbackGalleryImages);
   const [lightboxIndex,setLightboxIndex]=useState<number | null>(null);
+  useEffect(() => {
+    void fetchPublicGallery().then((images) => { if (images.length > 0) setGalleryImages(images); }).catch(() => undefined);
+  }, []);
   const images=galleryImages.filter(image=>selectedCategory==="All"||image.category===selectedCategory);
   const next=()=>setLightboxIndex(current=>current===null?null:(current+1)%images.length);
   const previous=()=>setLightboxIndex(current=>current===null?null:(current-1+images.length)%images.length);
