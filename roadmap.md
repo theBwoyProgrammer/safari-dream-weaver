@@ -4,6 +4,7 @@
 - [x] Use the supplied lodge flyer as a visual asset where appropriate
 - [ ] Update site metadata and verify desktop/mobile presentation
 
-- [ ] Build an expanded About page with lodge story and team composition
-- [ ] Add a guest review section to the home page
+- [ ] Build an expanded About page with the lodge story
+- [x] Skip team profiles until genuine staff details and photos are supplied
+- [x] Skip guest reviews until genuine review content is supplied
 - [ ] Apply the supplied Tembo copy and voice guidance
