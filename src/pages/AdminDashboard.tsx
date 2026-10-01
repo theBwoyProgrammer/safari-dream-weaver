@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
  type Activity = { id: string; title: string; summary: string | null; details: string | null; duration: string | null; price: string | null; image_url: string | null; sort_order: number; is_active: boolean };
  type SiteImage = { id: string; key: string; label: string; image_url: string | null };
  type TeamMember = { user_id: string; role: string; email: string; full_name: string };
+ type Booking = { id: string; guest_name: string; guest_email: string; check_in: string; check_out: string; rooms: number; status: string; payment_status: string; room_types?: { name?: string } | null };
  type Section = "overview" | "rooms" | "gallery" | "images" | "activities" | "reservations" | "team";
 
 const emptyRoom = { name: "", slug: "", description: "", total_rooms: 5, price_full_board: 0, price_half_board: 0, price_bed_breakfast: 0, max_guests: 2, image_url: "", sort_order: 0, is_active: true };
