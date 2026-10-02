@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where, type DocumentData, type QueryConstraint } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, setDoc, updateDoc, where, type DocumentData, type QueryConstraint } from "firebase/firestore";
 import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { firestore, firebaseStorage } from "@/integrations/firebase/client";
 import { firebaseAuth } from "@/integrations/firebase/client";
