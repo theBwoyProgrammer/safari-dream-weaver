@@ -25,7 +25,7 @@ const verifyFirebaseToken = async (request, env) => {
   });
   const data = await response.json();
   const user = data.users?.[0];
-  if (!response.ok || !user || user.emailVerified !== true) throw new Error("Invalid Firebase authentication.");
+  if (!response.ok || !user) throw new Error("Invalid Firebase authentication.");
   const profileResponse = await fetch(
     `https://firestore.googleapis.com/v1/projects/${env.FIREBASE_PROJECT_ID}/databases/(default)/documents/users/${encodeURIComponent(user.localId)}`,
     { headers: { Authorization: `Bearer ${authorization.slice(7)}` } },
