@@ -50,10 +50,17 @@ const AdminDashboard = () => {
     const bookingResult = await readBookings<Booking>();
     setBookings(bookingResult);
     if (isSuperAdmin) {
-      const [roomResult, galleryResult, activityResult, imageResult, packageResult] = await Promise.all([
-        readRecords<Room>("rooms"), readRecords<GalleryImage>("gallery"), readRecords<Activity>("activities"), readSiteImages<SiteImage>(), readRecords<RoomPackage>("roomPackages"),
+      const [roomResult, galleryResult, activityResult, imageResult] = await Promise.all([
+        readRecords<Room>("rooms"), readRecords<GalleryImage>("gallery"), readRecords<Activity>("activities"), readSiteImages<SiteImage>(),
       ]);
-      setRooms(roomResult); setGallery(galleryResult); setActivities(activityResult); setSiteImages(imageResult); setPackages(packageResult);
+      setRooms(roomResult); setGallery(galleryResult); setActivities(activityResult); setSiteImages(imageResult);
+      try {
+        setPackages(await readRecords<RoomPackage>("roomPackages"));
+      } catch (error) {
+        setPackages([]);
+        const detail = error instanceof Error ? error.message : "Deploy the updated Firestore rules to enable packages.";
+        setMessage(`Packages could not be loaded: ${detail}`);
+      }
       const teamRecords = await listTeam();
       setTeam(teamRecords.map((member) => ({ user_id: member.id, role: String(member.role ?? "pending"), email: String(member.email ?? ""), full_name: String(member.name ?? "") })));
     }
@@ -67,16 +74,24 @@ const AdminDashboard = () => {
   const run = async (operation: () => Promise<{ error: { message: string } | null }>) => {
     setBusy(true);
     setMessage("");
-    const result = await operation();
-    setBusy(false);
-    if (result.error) {
-      setMessage(result.error.message);
-      toast({ title: "Action failed", description: result.error.message, variant: "destructive" });
+    try {
+      const result = await operation();
+      if (result.error) {
+        setMessage(result.error.message);
+        toast({ title: "Action failed", description: result.error.message, variant: "destructive" });
+        return false;
+      }
+      await loadData();
+      toast({ title: "Saved", description: "Your changes are now live." });
+      return true;
+    } catch (error) {
+      const detail = error instanceof Error ? error.message : "The action could not be completed.";
+      setMessage(detail);
+      toast({ title: "Action failed", description: detail, variant: "destructive" });
       return false;
+    } finally {
+      setBusy(false);
     }
-    await loadData();
-    toast({ title: "Saved", description: "Your changes are now live." });
-    return true;
   };
 
   const saveRoom = async (event: FormEvent) => {
