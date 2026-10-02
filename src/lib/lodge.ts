@@ -21,13 +21,16 @@ export interface RoomType {
   image_url: string | null;
   sort_order: number;
   is_active: boolean;
-  packages?: RoomPackage[];
 }
 
 export interface RoomPackage {
+  id: string;
+  room_id: string;
   name: string;
-  description: string;
+  offerings: string[];
   price: number;
+  sort_order: number;
+  is_active: boolean;
 }
 
 export interface AvailabilityRow {
@@ -54,6 +57,7 @@ export const nightsBetween = (from: Date, to: Date) =>
   Math.max(0, Math.round((to.getTime() - from.getTime()) / 86400000));
 
 export const fetchRoomTypes = () => readPublicRecords<RoomType>("rooms");
+export const fetchRoomPackages = () => readPublicRecords<RoomPackage>("roomPackages");
 
 export const fetchAvailability = async (_start: Date, _end: Date) => [] as AvailabilityRow[];
 

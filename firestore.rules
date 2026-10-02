@@ -28,6 +28,11 @@ service cloud.firestore {
       allow write: if isSuperAdmin();
     }
 
+    match /roomPackages/{packageId} {
+      allow read: if resource.data.is_active == true || isAdmin();
+      allow write: if isSuperAdmin();
+    }
+
     match /gallery/{imageId} {
       allow read: if resource.data.is_active == true || isAdmin();
       allow write: if isSuperAdmin();
