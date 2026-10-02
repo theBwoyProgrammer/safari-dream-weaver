@@ -15,6 +15,16 @@ const json = (body, status = 200) =>
 
 const apiBase = (env) => API_BASES[env.PESAPAL_ENV || "sandbox"] || API_BASES.sandbox;
 
+const readJson = async (response, stage) => {
+  const text = await response.text();
+  if (!text) throw new Error(`${stage} returned an empty response (${response.status}).`);
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new Error(`${stage} returned an invalid response (${response.status}).`);
+  }
+};
+
 const verifyFirebaseToken = async (request, env) => {
   const authorization = request.headers.get("Authorization") || "";
   if (!authorization.startsWith("Bearer ")) throw new Error("Sign in as an admin first.");
@@ -23,21 +33,21 @@ const verifyFirebaseToken = async (request, env) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ idToken: authorization.slice(7) }),
   });
-  const data = await response.json();
+  const data = await readJson(response, "Firebase authentication lookup");
   const user = data.users?.[0];
   if (!response.ok || !user) throw new Error("Invalid Firebase authentication.");
   const profileResponse = await fetch(
     `https://firestore.googleapis.com/v1/projects/${env.FIREBASE_PROJECT_ID}/databases/(default)/documents/users/${encodeURIComponent(user.localId)}`,
     { headers: { Authorization: `Bearer ${authorization.slice(7)}` } },
   );
-  const profile = await profileResponse.json();
+  const profile = await readJson(profileResponse, "Firebase profile lookup");
   const role = profile.fields?.role?.stringValue;
   if (!profileResponse.ok || (role !== "admin" && role !== "super_admin")) throw new Error("Only lodge admins can create payment links.");
   return user;
 };
 
 const getPesapalToken = async (env) => {
-  const response = await fetch(`${apiBase(env)}/Auth/RequestToken`, {
+  const response = await fetch(`${apiBase(env)}/api/Auth/RequestToken`, {
     method: "POST",
     headers: { Accept: "application/json", "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -45,7 +55,7 @@ const getPesapalToken = async (env) => {
       consumer_secret: env.PESAPAL_CONSUMER_SECRET,
     }),
   });
-  const data = await response.json();
+  const data = await readJson(response, "Pesapal authentication");
   if (!response.ok || !data.token) throw new Error("Pesapal authentication failed.");
   return data.token;
 };
@@ -56,7 +66,7 @@ const getTransactionStatus = async (env, trackingId) => {
     `${apiBase(env)}/api/Transactions/GetTransactionStatus?orderTrackingId=${encodeURIComponent(trackingId)}`,
     { headers: { Accept: "application/json", Authorization: `Bearer ${token}` } },
   );
-  const data = await response.json();
+  const data = await readJson(response, "Pesapal transaction status");
   if (!response.ok) throw new Error("Pesapal status lookup failed.");
   return data;
 };
@@ -116,7 +126,7 @@ export default {
             },
           }),
         });
-        const data = await orderResponse.json();
+        const data = await readJson(orderResponse, "Pesapal order creation");
         if (!orderResponse.ok || !data.redirect_url) {
           console.error("Pesapal order creation failed", data);
           return json({ error: "Pesapal could not create the payment link." }, 502);

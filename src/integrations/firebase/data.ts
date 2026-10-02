@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, setDoc, updateDoc, where, type DocumentData, type QueryConstraint } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where, type DocumentData, type QueryConstraint } from "firebase/firestore";
 import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { firestore, firebaseStorage } from "@/integrations/firebase/client";
 import { firebaseAuth } from "@/integrations/firebase/client";
@@ -12,10 +12,10 @@ const readCollection = async <T extends FirestoreRecord>(name: string, constrain
 };
 
 export const readRecords = <T extends FirestoreRecord>(name: string, sortField = "sort_order") =>
-  readCollection<T>(name, [orderBy(sortField, "asc")]);
+  readCollection<T>(name).then((records) => records.sort((left, right) => Number(left[sortField] ?? 0) - Number(right[sortField] ?? 0)));
 
 export const readPublicRecords = <T extends FirestoreRecord>(name: string, sortField = "sort_order") =>
-  readCollection<T>(name, [where("is_active", "==", true), orderBy(sortField, "asc")]);
+  readCollection<T>(name, [where("is_active", "==", true)]).then((records) => records.sort((left, right) => Number(left[sortField] ?? 0) - Number(right[sortField] ?? 0)));
 
 export const readBookings = <T extends FirestoreRecord>() =>
   readCollection<T>("bookings", [orderBy("created_at", "desc")]);
