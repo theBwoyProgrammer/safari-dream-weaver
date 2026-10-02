@@ -44,9 +44,10 @@ service cloud.firestore {
     }
 
     match /bookings/{bookingId} {
-      allow create: if true;
+      allow create: if isAdmin();
       allow read: if isAdmin();
-      allow update, delete: if isSuperAdmin();
+      allow update: if isSuperAdmin() || (isAdmin() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'payment_status', 'checked_in_at', 'checked_out_at', 'updated_at']));
+      allow delete: if isSuperAdmin();
     }
   }
 }

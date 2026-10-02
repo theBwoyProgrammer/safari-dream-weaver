@@ -1,6 +1,7 @@
 import { collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, setDoc, updateDoc, where, type DocumentData, type QueryConstraint } from "firebase/firestore";
 import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { firestore, firebaseStorage } from "@/integrations/firebase/client";
+import { firebaseAuth } from "@/integrations/firebase/client";
 
 export type Role = "super_admin" | "admin";
 export type FirestoreRecord = DocumentData & { id: string };
@@ -85,6 +86,21 @@ export const deleteManagedImage = (imageUrl: string) => {
   } catch {
     return Promise.resolve();
   }
+};
+
+export const createPesapalPayment = async (booking: { id: string; guest_name: string; guest_email: string; guest_phone?: string; total_amount?: number; room_name?: string }) => {
+  const user = firebaseAuth.currentUser;
+  if (!user) throw new Error("Sign in as an admin before creating a payment link.");
+  const token = await user.getIdToken();
+  const baseUrl = import.meta.env.VITE_FIREBASE_FUNCTIONS_URL || "https://us-central1-hatimdev-he.cloudfunctions.net";
+  const response = await fetch(`${baseUrl}/createPesapalPayment`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ bookingId: booking.id, guestName: booking.guest_name, guestEmail: booking.guest_email, guestPhone: booking.guest_phone, amount: booking.total_amount, description: `${booking.room_name || "Lodge"} reservation` }),
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || "Could not create the Pesapal payment link.");
+  return data as { redirect_url: string; order_tracking_id: string };
 };
 
 export { collection, doc, getDoc, getDocs, query, setDoc, where };

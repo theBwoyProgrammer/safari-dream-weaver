@@ -1,18 +1,19 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ImagePlus, LogOut, Pencil, Plus, Save, ShieldCheck, Trash2, Users, X } from "lucide-react";
-import { listTeam, readRecords, readBookings, readSiteImages, removeRecord, removeUserRole, saveRecord, updateRecord, updateUserRole, uploadManagedImage } from "@/integrations/firebase/data";
+import { createPesapalPayment, listTeam, readRecords, readBookings, readSiteImages, removeRecord, removeUserRole, saveRecord, updateRecord, updateUserRole, uploadManagedImage } from "@/integrations/firebase/data";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import ReservationsPanel from "@/components/admin/ReservationsPanel";
 
  type Room = { id: string; name: string; slug: string; description: string | null; total_rooms: number; price_full_board: number; price_half_board: number; price_bed_breakfast: number; max_guests: number; image_url: string | null; sort_order: number; is_active: boolean };
  type GalleryImage = { id: string; title: string; category: string; image_url: string; sort_order: number; is_active: boolean };
  type Activity = { id: string; title: string; summary: string | null; details: string | null; duration: string | null; price: string | null; image_url: string | null; sort_order: number; is_active: boolean };
  type SiteImage = { id: string; key: string; label: string; image_url: string | null };
  type TeamMember = { user_id: string; role: string; email: string; full_name: string };
- type Booking = { id: string; guest_name: string; guest_email: string; check_in: string; check_out: string; rooms: number; status: string; payment_status: string; room_types?: { name?: string } | null };
+ type Booking = { id: string; guest_name: string; guest_email: string; guest_phone?: string; check_in: string; check_out: string; rooms: number; room_type_id?: string; room_name?: string; total_amount?: number; status: string; payment_status: string; checked_in_at?: string; checked_out_at?: string };
  type Section = "overview" | "rooms" | "gallery" | "images" | "activities" | "reservations" | "team";
 
 const emptyRoom = { name: "", slug: "", description: "", total_rooms: 5, price_full_board: 0, price_half_board: 0, price_bed_breakfast: 0, max_guests: 2, image_url: "", sort_order: 0, is_active: true };
@@ -108,6 +109,35 @@ const AdminDashboard = () => {
     await run(async () => { try { await updateRecord("bookings", id, { [field]: value }); return { error: null }; } catch (error) { return { error: error as { message: string } }; } });
   };
 
+  const createBooking = async (draft: Record<string, unknown>) => {
+    await run(async () => {
+      try {
+        const booking = { ...draft, created_at: new Date().toISOString(), status: "confirmed", payment_status: draft.payment_status || "unpaid" };
+        const bookingId = await saveRecord("bookings", booking);
+        if (Number(draft.total_amount) > 0) {
+          const payment = await createPesapalPayment({ id: bookingId, guest_name: String(draft.guest_name), guest_email: String(draft.guest_email), guest_phone: String(draft.guest_phone || ""), total_amount: Number(draft.total_amount), room_name: String(draft.room_name || "") });
+          await updateRecord("bookings", bookingId, { payment_link: payment.redirect_url, pesapal_tracking_id: payment.order_tracking_id, payment_status: "payment_link_sent" });
+          window.open(payment.redirect_url, "_blank", "noopener,noreferrer");
+        }
+        return { error: null };
+      } catch (error) { return { error: error as { message: string } }; }
+    });
+  };
+
+  const updateReservation = async (id: string, changes: Record<string, unknown>) => {
+    await run(async () => { try { await updateRecord("bookings", id, changes); return { error: null }; } catch (error) { return { error: error as { message: string } }; } });
+  };
+
+  const createPaymentLink = async (booking: Booking) => {
+    try {
+      const payment = await createPesapalPayment(booking);
+      await updateReservation(booking.id, { payment_link: payment.redirect_url, payment_status: "payment_link_sent" });
+      window.open(payment.redirect_url, "_blank", "noopener,noreferrer");
+    } catch (error) {
+      setMessage((error as Error).message);
+    }
+  };
+
   const addTeamMember = async (event: FormEvent) => {
     event.preventDefault();
     setBusy(true);
@@ -140,7 +170,7 @@ const AdminDashboard = () => {
       <header className="border-b border-border bg-card"><div className="safari-container flex flex-wrap items-center justify-between gap-4 py-5"><div><Link to="/" className="font-display text-2xl font-bold text-primary">TEMBO SAFARI LODGE</Link><p className="text-sm text-muted-foreground">Operations dashboard</p></div><div className="flex items-center gap-3"><span className="hidden text-sm text-muted-foreground sm:inline">{user.email}</span><Button variant="outline" size="sm" onClick={() => void signOut().then(() => navigate("/admin/login"))}><LogOut size={16} className="mr-2" /> Sign out</Button></div></div></header>
       <div className="safari-container grid gap-8 py-8 lg:grid-cols-[220px_1fr]">
         <aside className="self-start rounded-lg bg-card p-3 shadow-soft"><div className="mb-3 flex items-center gap-2 px-3 py-2 text-sm font-semibold text-primary"><ShieldCheck size={17} /> {isSuperAdmin ? "Super admin" : "Admin · read only"}</div>{navItems.filter((item) => !item.superOnly || isSuperAdmin).map((item) => <button key={item.id} type="button" onClick={() => setSection(item.id)} className={`w-full rounded-md px-3 py-2 text-left text-sm font-medium ${section === item.id ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}>{item.label}</button>)}</aside>
-        <main className="min-w-0">{message && <p className="mb-5 rounded-md border border-border bg-card p-3 text-sm text-muted-foreground">{message}</p>}{section === "overview" && <Overview rooms={rooms} gallery={gallery} activities={activities} bookings={bookings} isSuperAdmin={isSuperAdmin} setSection={setSection} />}{section === "rooms" && isSuperAdmin && <CrudSection title="Rooms and rates" description="Manage room inventory, guest capacity, rates, and room imagery." form={<RoomForm value={roomForm} setValue={setRoomForm} onSubmit={saveRoom} busy={busy} />}><div className="grid gap-4 md:grid-cols-2">{rooms.map((room) => <RecordCard key={room.id} title={room.name} subtitle={`${room.total_rooms} rooms · up to ${room.max_guests} guests`} image={room.image_url} active={room.is_active} onEdit={() => setRoomForm({ ...room, description: room.description ?? "", image_url: room.image_url ?? "" })} onDelete={() => void remove("room_types", room.id)} />)}</div></CrudSection>}{section === "gallery" && isSuperAdmin && <CrudSection title="Gallery" description="Add, edit, reorder, or hide lodge and wildlife gallery images." form={<GalleryForm value={galleryForm} setValue={setGalleryForm} onSubmit={saveGallery} busy={busy} />}><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{gallery.map((image) => <RecordCard key={image.id} title={image.title} subtitle={image.category} image={image.image_url} active={image.is_active} onEdit={() => setGalleryForm(image)} onDelete={() => void remove("gallery_images", image.id)} />)}</div></CrudSection>}{section === "images" && isSuperAdmin && <CrudSection title="Main images and price schedule" description="Manage the hero, logo, price schedule poster, and other site-wide image slots." form={<SiteImageForm value={siteImageForm} setValue={setSiteImageForm} onSubmit={saveSiteImage} busy={busy} />}><div className="grid gap-4 md:grid-cols-2">{siteImages.map((image) => <RecordCard key={image.key} title={image.label} subtitle={image.key} image={image.image_url} onEdit={() => setSiteImageForm({ ...image, editingKey: image.key })} onDelete={() => void removeSiteImage(image.key)} />)}</div></CrudSection>}{section === "activities" && isSuperAdmin && <CrudSection title="Explore activities" description="Manage the experiences shown under Explore." form={<ActivityForm value={activityForm} setValue={setActivityForm} onSubmit={saveActivity} busy={busy} />}><div className="grid gap-4 md:grid-cols-2">{activities.map((activity) => <RecordCard key={activity.id} title={activity.title} subtitle={`${activity.duration ?? "Flexible"}${activity.price ? ` · ${activity.price}` : ""}`} image={activity.image_url} active={activity.is_active} onEdit={() => setActivityForm(activity)} onDelete={() => void remove("activities", activity.id)} />)}</div></CrudSection>}{section === "reservations" && <Reservations bookings={bookings} onUpdate={updateBooking} readOnly={!isSuperAdmin} />}{section === "team" && isSuperAdmin && <Team team={team} email={teamEmail} role={teamRole} setEmail={setTeamEmail} setRole={setTeamRole} onSubmit={addTeamMember} onRemove={removeTeamMember} busy={busy} />}</main>
+        <main className="min-w-0">{message && <p className="mb-5 rounded-md border border-border bg-card p-3 text-sm text-muted-foreground">{message}</p>}{section === "overview" && <Overview rooms={rooms} gallery={gallery} activities={activities} bookings={bookings} isSuperAdmin={isSuperAdmin} setSection={setSection} />}{section === "rooms" && isSuperAdmin && <CrudSection title="Rooms and rates" description="Manage room inventory, guest capacity, rates, and room imagery." form={<RoomForm value={roomForm} setValue={setRoomForm} onSubmit={saveRoom} busy={busy} />}><div className="grid gap-4 md:grid-cols-2">{rooms.map((room) => <RecordCard key={room.id} title={room.name} subtitle={`${room.total_rooms} rooms · up to ${room.max_guests} guests`} image={room.image_url} active={room.is_active} onEdit={() => setRoomForm({ ...room, description: room.description ?? "", image_url: room.image_url ?? "" })} onDelete={() => void remove("room_types", room.id)} />)}</div></CrudSection>}{section === "gallery" && isSuperAdmin && <CrudSection title="Gallery" description="Add, edit, reorder, or hide lodge and wildlife gallery images." form={<GalleryForm value={galleryForm} setValue={setGalleryForm} onSubmit={saveGallery} busy={busy} />}><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{gallery.map((image) => <RecordCard key={image.id} title={image.title} subtitle={image.category} image={image.image_url} active={image.is_active} onEdit={() => setGalleryForm(image)} onDelete={() => void remove("gallery_images", image.id)} />)}</div></CrudSection>}{section === "images" && isSuperAdmin && <CrudSection title="Main images and price schedule" description="Manage the hero, logo, price schedule poster, and other site-wide image slots." form={<SiteImageForm value={siteImageForm} setValue={setSiteImageForm} onSubmit={saveSiteImage} busy={busy} />}><div className="grid gap-4 md:grid-cols-2">{siteImages.map((image) => <RecordCard key={image.key} title={image.label} subtitle={image.key} image={image.image_url} onEdit={() => setSiteImageForm({ ...image, editingKey: image.key })} onDelete={() => void removeSiteImage(image.key)} />)}</div></CrudSection>}{section === "activities" && isSuperAdmin && <CrudSection title="Explore activities" description="Manage the experiences shown under Explore." form={<ActivityForm value={activityForm} setValue={setActivityForm} onSubmit={saveActivity} busy={busy} />}><div className="grid gap-4 md:grid-cols-2">{activities.map((activity) => <RecordCard key={activity.id} title={activity.title} subtitle={`${activity.duration ?? "Flexible"}${activity.price ? ` · ${activity.price}` : ""}`} image={activity.image_url} active={activity.is_active} onEdit={() => setActivityForm(activity)} onDelete={() => void remove("activities", activity.id)} />)}</div></CrudSection>}{section === "reservations" && <ReservationsPanel bookings={bookings} isSuperAdmin={isSuperAdmin} onCreate={createBooking} onUpdate={updateReservation} />}{section === "team" && isSuperAdmin && <Team team={team} email={teamEmail} role={teamRole} setEmail={setTeamEmail} setRole={setTeamRole} onSubmit={addTeamMember} onRemove={removeTeamMember} busy={busy} />}</main>
       </div>
     </div>
   );
