@@ -92,8 +92,9 @@ export const createPesapalPayment = async (booking: { id: string; guest_name: st
   const user = firebaseAuth.currentUser;
   if (!user) throw new Error("Sign in as an admin before creating a payment link.");
   const token = await user.getIdToken();
-  const baseUrl = import.meta.env.VITE_FIREBASE_FUNCTIONS_URL || "https://us-central1-hatimdev-he.cloudfunctions.net";
-  const response = await fetch(`${baseUrl}/createPesapalPayment`, {
+  const baseUrl = import.meta.env.VITE_PESAPAL_WORKER_URL;
+  if (!baseUrl) throw new Error("Pesapal Worker URL is not configured.");
+  const response = await fetch(`${baseUrl}/create-payment`, {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
     body: JSON.stringify({ bookingId: booking.id, guestName: booking.guest_name, guestEmail: booking.guest_email, guestPhone: booking.guest_phone, amount: booking.total_amount, description: `${booking.room_name || "Lodge"} reservation` }),
