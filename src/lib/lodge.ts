@@ -21,6 +21,13 @@ export interface RoomType {
   image_url: string | null;
   sort_order: number;
   is_active: boolean;
+  packages?: RoomPackage[];
+}
+
+export interface RoomPackage {
+  name: string;
+  description: string;
+  price: number;
 }
 
 export interface AvailabilityRow {
