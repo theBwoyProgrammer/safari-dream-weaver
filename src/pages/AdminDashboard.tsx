@@ -150,7 +150,7 @@ const AdminDashboard = () => {
   const createBooking = async (draft: Record<string, unknown>) => {
     await run(async () => {
       try {
-        const booking = { draft, created_at: new Date().toISOString(), status: "confirmed", payment_status: draft.payment_status || "unpaid" };
+        const booking = { ...draft, created_at: new Date().toISOString(), status: "confirmed", payment_status: draft.payment_status || "unpaid" };
         const bookingId = await saveRecord("bookings", booking);
         if (Number(draft.total_amount) > 0) {
           try {

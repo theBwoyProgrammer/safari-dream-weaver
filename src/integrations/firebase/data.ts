@@ -19,7 +19,11 @@ export const readPublicRecords = <T extends FirestoreRecord>(name: string, sortF
   readCollection<T>(name, [where("is_active", "==", true)]).then((records) => records.sort((left, right) => Number(left[sortField] ?? 0) - Number(right[sortField] ?? 0)));
 
 export const readBookings = <T extends FirestoreRecord>() =>
-  readCollection<T>("bookings", [orderBy("created_at", "desc")]);
+  readCollection<T>("bookings", [orderBy("created_at", "desc")]).then((records) =>
+    records.map((record) => record.draft && typeof record.draft === "object"
+      ? ({ ...record, ...(record.draft as Record<string, unknown>), draft: undefined } as T)
+      : record),
+  );
 
 export const readSiteImages = <T extends FirestoreRecord>() =>
   readCollection<T>("siteImages", [orderBy("key", "asc")]);
