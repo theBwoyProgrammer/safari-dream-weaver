@@ -33,7 +33,7 @@ The administration portal is available at:
 For example, if the website is hosted at `https://your-lodge-domain.com`, the portal is:
 
 ```text
-https://your-lodge-domain.com/admin
+https://tembosafaris.com/admin
 ```
 
 The login page is:
@@ -56,6 +56,9 @@ Both roles sign in through the same Admin Portal. The dashboard changes automati
 ### 2.1 Admin
 
 An Admin is an operational staff member. Admins can access reservations and guest operations, but they cannot change public lodge content or team permissions.
+
+<img width="897" height="648" alt="image" src="https://github.com/user-attachments/assets/6385e583-c0fb-48c7-ad76-96c496917679" />
+
 
 An Admin can:
 
@@ -91,11 +94,17 @@ The dashboard identifies this role as:
 Admin · read only
 ```
 
+<img width="1330" height="522" alt="image" src="https://github.com/user-attachments/assets/f7d6ffbe-d0dd-452d-9c62-485611ee00f1" />
+
+
 This means the Admin is read-only for website content, not that the Admin is unable to manage reservations.
 
 ### 2.2 Super Admin
 
 A Super Admin has full administration access. This is the role that should be assigned only to a trusted lodge owner, manager, or designated system administrator.
+
+<img width="1333" height="521" alt="image" src="https://github.com/user-attachments/assets/5c814e57-2548-4893-b06c-668d075f8f20" />
+
 
 A Super Admin can do everything an Admin can do, plus:
 
@@ -143,6 +152,9 @@ The new staff member should:
 
 The password must contain at least six characters.
 
+<img width="1090" height="675" alt="image" src="https://github.com/user-attachments/assets/efc7b8b7-255d-4faa-ad74-569caf94ae3c" />
+
+
 After registration, the account is created with a temporary role:
 
 ```text
@@ -165,6 +177,9 @@ The Super Admin should:
    - `admin`, or
    - `super_admin`
 6. Submit the form.
+
+   <img width="1315" height="503" alt="image" src="https://github.com/user-attachments/assets/22bc5acc-7183-4948-93bc-7096f9c3cd21" />
+
 
 The normal method is to use the email address. The UID field is an alternative for cases where the email cannot be matched.
 
