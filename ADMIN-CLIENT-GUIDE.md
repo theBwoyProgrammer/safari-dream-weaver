@@ -1,3 +1,12 @@
+
+<div align="center">
+  <img width="300" height="300" alt="Ovrt (1)" src="https://github.com/user-attachments/assets/4f48e57d-8e46-4d57-acb0-62c9dd7efc5a" />
+</div>
+
+
+
+
+
 # Tembo Safari Lodge
 ## Admin and Super Admin User Guide
 
@@ -309,10 +318,16 @@ The left-hand navigation is role-aware:
 - Reservations
 - Team
 
+- <img width="1309" height="628" alt="image" src="https://github.com/user-attachments/assets/a430c36d-7a5c-4b4d-b599-36d28d32b298" />
+
+
 ### Admin navigation
 
 - Overview
 - Reservations
+
+- <img width="1333" height="647" alt="image" src="https://github.com/user-attachments/assets/86bf116f-ef2c-4cf0-bd06-034bddbed3b2" />
+
 
 ---
 
@@ -326,7 +341,7 @@ A room record describes the actual accommodation type. It does not define the pa
 
 Room fields include:
 
-- **Room name**: The public name, such as `Deluxe` or `Demo Rooms`.
+- **Room name**: The public name, such as `Deluxe` or `Standard`.
 - **Slug**: A web-friendly identifier. It is usually generated from the room name when creating a new room.
 - **Description**: General information about the room.
 - **Image URL**: The image displayed for the room when an image is provided.
@@ -350,6 +365,9 @@ A Super Admin should:
 9. Ensure the room is active.
 10. Select **Add item**.
 
+    <img width="1312" height="673" alt="image" src="https://github.com/user-attachments/assets/f3a7280f-741b-4881-8dc2-31368f7378aa" />
+
+
 After saving:
 
 - A success notification appears.
@@ -367,19 +385,7 @@ After saving:
 
 The form is pre-filled with the existing data. Saving updates the same room rather than creating a duplicate.
 
-### 6.3 Hiding a room
-
-If a room should temporarily disappear from the public website, edit it and turn off its active/live status.
-
-Use this when:
-
-- The room is temporarily unavailable.
-- The lodge is renovating the room.
-- The room should not currently be offered to visitors.
-
-Hiding a room is preferable to deleting it when the room may be used again.
-
-### 6.4 Deleting a room
+### 6.3 Deleting a room
 
 1. Open **Rooms**.
 2. Select the delete/trash button on the room.
@@ -416,6 +422,9 @@ Examples of package names:
 - Honeymoon Package
 - Corporate Retreat Package
 
+- <img width="1311" height="670" alt="image" src="https://github.com/user-attachments/assets/6873246b-256f-4e38-8ee4-418e4243435f" />
+
+
 ### 7.2 Adding multiple offerings
 
 A package can have as many offering lines as needed.
@@ -448,6 +457,9 @@ To add offerings:
 8. Set the sort order.
 9. Ensure the package is active.
 10. Select **Add item**.
+
+    <img width="1280" height="643" alt="image" src="https://github.com/user-attachments/assets/1f23772d-4062-412f-803e-27460f31b2de" />
+
 
 The price belongs to the package as a whole. It is not repeated separately for every offering.
 
@@ -519,6 +531,9 @@ Each gallery item includes:
 5. Set the sort order.
 6. Select **Add item**.
 
+   <img width="1317" height="599" alt="image" src="https://github.com/user-attachments/assets/b1a83553-2fa2-4aac-b331-a7ca6e6a6dd8" />
+
+
 The image URL must be reachable by the public website.
 
 ### 8.2 Editing an image
@@ -562,6 +577,9 @@ The exact label shown to staff explains where the image is used.
 3. Enter a readable label.
 4. Enter the image URL or upload an image where available.
 5. Select **Add item** or **Save changes**.
+
+   <img width="1310" height="514" alt="image" src="https://github.com/user-attachments/assets/4f6bffcd-9ad7-4a8f-b372-1781a1fcb377" />
+
 
 The key determines where the image is used. Do not change an existing key casually, because the public page may be looking for that exact key.
 
@@ -610,6 +628,9 @@ Examples:
 8. Set the sort order.
 9. Select **Add item**.
 
+    <img width="1308" height="640" alt="image" src="https://github.com/user-attachments/assets/74c17a68-cade-42e1-8ed6-1503f817495e" />
+
+
 ### 10.2 Publishing and hiding activities
 
 Only active activities appear publicly.
@@ -652,6 +673,9 @@ The system records the reservation as:
 status: confirmed
 payment_status: unpaid
 ```
+
+<img width="1309" height="666" alt="image" src="https://github.com/user-attachments/assets/dc792d1a-2d9f-44a4-9693-3bc7cef010d7" />
+
 
 If the total amount is greater than zero, the system also attempts to create a Pesapal payment link.
 
@@ -713,6 +737,9 @@ The reservation payment status is updated to:
 ```text
 payment_link_sent
 ```
+
+<img width="1324" height="494" alt="image" src="https://github.com/user-attachments/assets/88b4dfff-0b88-42b1-b4f6-985421ebdeb0" />
+
 
 ### 11.5 If payment-link creation fails
 
@@ -1103,3 +1130,13 @@ Use **Rooms** to manage room types shown on the homepage.
 Use **Packages & offerings** to manage Full Board, Half Board, Bed & Breakfast, or any other package and its price/inclusions.
 
 This keeps the public website clear and prevents room information from becoming mixed up with package pricing.
+
+
+
+
+
+
+<div align="center">
+  Prepared by <a href="https://www.ovrtilabstechsystems.com/">OvrtiLabs Tech Systems</a>
+</div>
+
