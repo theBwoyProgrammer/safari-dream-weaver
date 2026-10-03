@@ -2,6 +2,7 @@ import { collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, setDoc, up
 import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { firestore, firebaseStorage } from "@/integrations/firebase/client";
 import { firebaseAuth } from "@/integrations/firebase/client";
+import { sendPasswordResetEmail } from "firebase/auth";
 
 export type Role = "super_admin" | "admin";
 export type FirestoreRecord = DocumentData & { id: string };
@@ -72,6 +73,8 @@ export const updateUserRole = async (email: string, role: Role, userId?: string)
 };
 
 export const removeUserRole = (userId: string) => updateDoc(doc(firestore, "users", userId), { role: "pending", updated_at: new Date().toISOString() });
+
+export const sendTeamPasswordReset = (email: string) => sendPasswordResetEmail(firebaseAuth, email.trim().toLowerCase());
 
 export const uploadManagedImage = async (file: File, folder: string) => {
   const path = `managed/${folder}/${crypto.randomUUID()}-${file.name}`;
