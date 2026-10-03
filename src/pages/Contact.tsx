@@ -9,7 +9,7 @@ import heroImage from "@/assets/tembo-lodge-hero.jpg";
 const contactInfo = [
   { icon: MapPin, title: "Our Location", details: ["P.O. Box 23008", "Queen Elizabeth National Park, Katunguru"] },
   { icon: Phone, title: "Call Us", details: ["+256 701 628 803", "+256 772 628 803 "] },
-  { icon: Mail, title: "Email Us", details: ["info@tembosafari.com"] },
+  { icon: Mail, title: "Email Us", details: ["tembosafarilodge@gmail.com"] },
   { icon: Clock, title: "Opening", details: ["Open daily for travellers"] },
 ];
 
@@ -20,7 +20,7 @@ const Contact = () => {
     event.preventDefault();
     const subject = encodeURIComponent(`${formData.subject || "Lodge enquiry"} from ${formData.name}`);
     const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\n\n${formData.message}`);
-    window.location.href = `mailto:info@tembosafari.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:tembosafarilodge@gmail.com?subject=${subject}&body=${body}`;
   };
 
   return <div className="min-h-screen bg-background"><Navbar />
