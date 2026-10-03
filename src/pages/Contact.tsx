@@ -8,7 +8,7 @@ import heroImage from "@/assets/tembo-lodge-hero.jpg";
 
 const contactInfo = [
   { icon: MapPin, title: "Our Location", details: ["P.O. Box 23008", "Queen Elizabeth National Park, Katunguru"] },
-  { icon: Phone, title: "Call Us", details: ["+256 701 628 803", "+256 772 423 037"] },
+  { icon: Phone, title: "Call Us", details: ["+256 701 628 803", "+256 772 628 803 "] },
   { icon: Mail, title: "Email Us", details: ["info@tembosafari.com"] },
   { icon: Clock, title: "Opening", details: ["Open daily for travellers"] },
 ];

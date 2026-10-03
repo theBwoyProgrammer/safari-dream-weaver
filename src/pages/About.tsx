@@ -4,7 +4,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CallToAction from "@/components/home/CallToAction";
 import lodgeAerial from "@/assets/image-3.jpeg";
-import cottageImage from "@/assets/image-5.jpeg";
+import cottageImage from "@/assets/image-2.jpeg";
 import sunsetImage from "@/assets/image-6.jpeg";
 import diningImage from "@/assets/image-7.jpeg";
 
@@ -54,7 +54,7 @@ const About = () => (
         <div className="safari-container">
           <div className="mb-12 max-w-3xl">
             <span className="safari-badge mb-5">Life at the lodge</span>
-            <h2 className="safari-heading mb-6">The rhythm of a day at Tembo</h2>
+            <h2 className="safari-heading mb-6">The rhythm of a day at Tembo Safari Lodge</h2>
             <p className="safari-text">Leave early for the park, return to a quiet room and a warm meal, then watch the last light move across the channel landscape.</p>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
