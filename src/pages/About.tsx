@@ -10,7 +10,7 @@ import diningImage from "@/assets/image-7.jpeg";
 
 const features = [
   { icon: BedDouble, title: "A place to return to", text: "Traditional grass-thatched cottages and standard rooms, with private balconies, mosquito nets, self-contained bathrooms, and hot showers." },
-  { icon: Waves, title: "The channel, close by", text: "The Kazinga Channel lies just 300 metres away, placing water, birdlife, and the rhythms of the park within the lodge landscape." },
+  { icon: Waves, title: "The channel, close by", text: "The Kazinga Channel lies just 200 metres away, placing water, birdlife, and the rhythms of the park within the lodge landscape." },
   { icon: Utensils, title: "A warm meal at day's end", text: "Return from the game tracks to local and continental dishes in the lodge restaurant, with a bar open to guests." },
   { icon: Bird, title: "Days shaped by the wild", text: "Plan boat cruises, guided game drives, nature walks, bird watching, biking, and fishing tours from Katunguru." },
 ];
@@ -94,7 +94,7 @@ const About = () => (
             <p className="safari-text">Find Tembo off the Ntungamo–Katunguru Road, inside Queen Elizabeth National Park.</p>
           </div>
           <div className="grid gap-8 md:grid-cols-3">
-            <div className="border-t-2 border-secondary pt-6"><MapPin className="mb-4 text-primary" /><h3 className="mb-2 text-xl font-bold">In the park</h3><p className="text-muted-foreground">Katunguru, Queen Elizabeth National Park, Uganda—just 300 metres from the Kazinga Channel.</p></div>
+            <div className="border-t-2 border-secondary pt-6"><MapPin className="mb-4 text-primary" /><h3 className="mb-2 text-xl font-bold">In the park</h3><p className="text-muted-foreground">Katunguru, Queen Elizabeth National Park, Uganda—just 200 metres from the Kazinga Channel.</p></div>
             <div className="border-t-2 border-secondary pt-6"><Car className="mb-4 text-primary" /><h3 className="mb-2 text-xl font-bold">By road</h3><p className="text-muted-foreground">About 5–6 hours (384 km) from Kampala via Mbarara and Bushenyi.</p></div>
             <div className="border-t-2 border-secondary pt-6"><Plane className="mb-4 text-primary" /><h3 className="mb-2 text-xl font-bold">By air</h3><p className="text-muted-foreground">About 1 hour from Entebbe to Kasese Airstrip, followed by a short transfer.</p></div>
           </div>
